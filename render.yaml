@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: drawing-app-server
+    name: collabrative-drawing-app
     env: node
     buildCommand: cd server && npm install
     startCommand: cd server && node server.js
