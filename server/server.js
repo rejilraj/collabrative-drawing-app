@@ -7,29 +7,33 @@ const { v4: uuidv4 } = require('uuid');
 
 // Initialize Express app
 const app = express();
-app.use(cors({
-  origin: [
-    'https://4e0a-2409-40f3-12-a75-c4d3-a312-2139-ff2c.ngrok-free.app',
-    'http://localhost:3000' // For local dev
-  ],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: [
+//     'https://4e0a-2409-40f3-12-a75-c4d3-a312-2139-ff2c.ngrok-free.app',
+//     'http://localhost:3000' // For local dev
+//   ],
+//   credentials: true
+// }));
+
+app.use(cors());
 
 // Create HTTP server
 const server = http.createServer(app);
 
 // Create WebSocket server
-const wss = new WebSocket.Server({ 
-  server,
-  verifyClient: (info, done) => {
-  // Allow ngrok and localhost
-  const origin = info.origin || info.req.headers.origin;
-  if (origin.includes('ngrok-free.app') || origin.includes('localhost')) {
-    return done(true);
-  }
-  done(false, 401, 'Unauthorized');
-}
-});
+// const wss = new WebSocket.Server({ 
+//   server,
+//   verifyClient: (info, done) => {
+//   // Allow ngrok and localhost
+//   const origin = info.origin || info.req.headers.origin;
+//   if (origin.includes('ngrok-free.app') || origin.includes('localhost')) {
+//     return done(true);
+//   }
+//   done(false, 401, 'Unauthorized');
+// }
+// });
+
+const wss = new WebSocket.Server({ server });
 
 // Track connected clients with unique IDs
 const clients = new Map();
