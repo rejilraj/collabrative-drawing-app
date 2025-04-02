@@ -15,15 +15,22 @@ function App() {
 
   // Set up WebSocket connection
   useEffect(() => {
+    let wsUrl;
+  if (process.env.REACT_APP_API_URL) {
+    // Use environment variable if available (for production)
+    const apiUrl = process.env.REACT_APP_API_URL;
+    // Convert http(s):// to ws(s)://
+    wsUrl = apiUrl.replace(/^http/, 'ws');
+  } else {
+    // Fallback for development
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.hostname;
-    // Use the host's port if in production, or a different port (3001) if in development
-    const port = process.env.NODE_ENV === 'production' ? window.location.port : '3001';
-    // const wsUrl = `${protocol}//${host}${port ? `:${port}` : ''}`;
-    const wsUrl = 'wss://4e0a-2409-40f3-12-a75-c4d3-a312-2139-ff2c.ngrok-free.app'; 
-    
-    const newSocket = new WebSocket(wsUrl);
-    newSocket.binaryType = "blob"
+    const port = '10000'; // Development port
+    wsUrl = `${protocol}//${host}:${port}`;
+  }
+  
+  const newSocket = new WebSocket(wsUrl);
+  newSocket.binaryType = "blob";
     
     newSocket.onopen = () => {
       setIsConnected(true);

@@ -48,7 +48,7 @@ const Canvas = ({ socket, brushColor, brushSize, addNotification }) => {
         return;
       }
   
-      console.log(data, "Received data");
+      // console.log(data, "Received data");
   
       switch (data.type) {
         case 'draw':
