@@ -135,17 +135,32 @@ function broadcastReset(username) {
 }
 
 // For production, serve static files from React build folder
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
+if (process.env.NODE_ENV === 'production' && process.env.SERVE_FRONTEND === 'true') {
+  // Only try to serve the React build if explicitly configured to do so
+  const buildPath = path.join(__dirname, '../client/build');
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-  });
+  // Check if the build directory exists before trying to serve from it
+  try {
+    if (require('fs').existsSync(buildPath)) {
+      app.use(express.static(buildPath));
+      
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(buildPath, 'index.html'));
+      });
+    } else {
+      console.log('Build directory does not exist. Running in API-only mode.');
+    }
+  } catch (err) {
+    console.log('Error checking build directory:', err);
+    console.log('Running in API-only mode.');
+  }
 } else {
+  // API-only mode or development
   app.get('/', (req, res) => {
-    res.send('Development server running');
+    res.send('Drawing App API server running');
   });
 }
+
 
 // Start the server
 const PORT = process.env.PORT || 10000;
