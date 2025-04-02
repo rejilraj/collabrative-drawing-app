@@ -15,7 +15,10 @@ const app = express();
 //   credentials: true
 // }));
 
-app.use(cors());
+app.use(cors({
+  origin: '*', // Allow all origins temporarily
+  credentials: true
+}));
 
 // Create HTTP server
 const server = http.createServer(app);
