@@ -16,9 +16,30 @@ const app = express();
 // }));
 
 app.use(cors({
-  origin: '*', // Allow all origins temporarily
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      // Add your Vercel domain once you deploy
+      'https://collabrative-drawing-app-tau.vercel.app',
+      // For local development
+      'http://localhost:3000'
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
+// app.use(cors({
+//   origin: '*', // Allow all origins temporarily
+//   credentials: true
+// }));
 
 // Create HTTP server
 const server = http.createServer(app);
