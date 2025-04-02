@@ -1,0 +1,19 @@
+{
+    "name": "collaborative-drawing-app-server",
+    "version": "1.0.0",
+    "description": "WebSocket server for real-time collaborative drawing application",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "dev": "nodemon server.js"
+    },
+    "dependencies": {
+      "express": "5.1.0",
+      "ws": "8.18.1",
+      "uuid": "11.1.0",
+      "cors": "^2.8.5"
+    },
+    "devDependencies": {
+      "nodemon": "^3.0.2"
+    }
+  }
